@@ -1,6 +1,6 @@
 /* =========================================
-   🎭 ADIVINA QUIÉN P2P ULTRA ESTABLE
-   ROOM SYSTEM + AUTO QR
+   🎭 ADIVINA QUIÉN P2P
+   ULTRA ESTABLE FINAL
 ========================================= */
 
 /* =========================================
@@ -55,6 +55,8 @@ const characters = [
 
 ];
 
+/* GENERAR 24 */
+
 while(characters.length < 24){
 
     const base =
@@ -66,9 +68,12 @@ while(characters.length < 24){
 
         ...base,
 
-        name:base.name + characters.length,
+        name:
+            base.name +
+            characters.length,
 
-        image:`https://i.pravatar.cc/300?img=${characters.length+5}`
+        image:
+            `https://i.pravatar.cc/300?img=${characters.length+5}`
 
     });
 
@@ -117,7 +122,7 @@ let conn = null;
 let heartbeatInterval = null;
 
 /* =========================================
-   ROOM SYSTEM
+   ROOM
 ========================================= */
 
 const ROOM_ID =
@@ -199,10 +204,35 @@ function randomRoom(){
 }
 
 /* =========================================
+   QR
+========================================= */
+
+function generateQR(url){
+
+    const qr =
+        document.getElementById("qrcode");
+
+    qr.innerHTML = "";
+
+    new QRCode(qr,{
+
+        text:url,
+
+        width:180,
+
+        height:180
+
+    });
+
+}
+
+/* =========================================
    CREAR PEER
 ========================================= */
 
 function createPeer(){
+
+    let roomCode = ROOM_ID;
 
     let peerId;
 
@@ -210,24 +240,29 @@ function createPeer(){
 
     if(IS_HOST){
 
-        const room =
+        roomCode =
             randomRoom();
 
         peerId =
-            "room-" + room + "-host";
+            "room-" +
+            roomCode +
+            "-host";
 
         const url =
             window.location.origin +
             window.location.pathname +
-            "?room=" + room;
-
-        history.replaceState(
-            {},
-            "",
-            "?room=" + room
-        );
+            "?room=" +
+            roomCode;
 
         generateQR(url);
+
+        answerText.innerHTML =
+            `
+            📱 Escanea el QR
+            <br><br>
+            Sala:
+            <b>${roomCode}</b>
+            `;
 
     }
 
@@ -242,6 +277,11 @@ function createPeer(){
             .substring(2,8);
 
     }
+
+    console.log(
+        "PEER ID:",
+        peerId
+    );
 
     peer = new Peer(peerId,{
 
@@ -271,6 +311,11 @@ function createPeer(){
 
     peer.on("open",(id)=>{
 
+        console.log(
+            "PEER READY:",
+            id
+        );
+
         document
         .getElementById("myPeerId")
         .innerHTML = id;
@@ -280,7 +325,8 @@ function createPeer(){
             "#F59E0B"
         );
 
-        /* SI ES GUEST */
+        /* AUTO CONNECT */
+
         if(!IS_HOST){
 
             connectToHost();
@@ -290,6 +336,10 @@ function createPeer(){
     });
 
     peer.on("connection",(connection)=>{
+
+        console.log(
+            "RIVAL CONECTADO"
+        );
 
         conn = connection;
 
@@ -302,32 +352,9 @@ function createPeer(){
         console.error(err);
 
         setStatus(
-            "🔴 Error conexión",
+            "🔴 Error Peer",
             "#EF4444"
         );
-
-    });
-
-}
-
-/* =========================================
-   GENERAR QR
-========================================= */
-
-function generateQR(url){
-
-    const qr =
-        document.getElementById("qrcode");
-
-    qr.innerHTML = "";
-
-    new QRCode(qr,{
-
-        text:url,
-
-        width:180,
-
-        height:180
 
     });
 
@@ -340,7 +367,14 @@ function generateQR(url){
 function connectToHost(){
 
     const hostId =
-        "room-" + ROOM_ID + "-host";
+        "room-" +
+        ROOM_ID +
+        "-host";
+
+    console.log(
+        "Conectando a:",
+        hostId
+    );
 
     setStatus(
         "🟡 Conectando...",
@@ -357,7 +391,7 @@ function connectToHost(){
 
         setupConnection();
 
-    },2000);
+    },3000);
 
 }
 
@@ -370,6 +404,10 @@ function setupConnection(){
     conn.on("open",()=>{
 
         playSound();
+
+        console.log(
+            "CONEXIÓN ABIERTA"
+        );
 
         setStatus(
             "🟢 Conectado",
@@ -405,11 +443,6 @@ function setupConnection(){
             "#EF4444"
         );
 
-        addMessage(
-            "❌ Conexión cerrada",
-            "system"
-        );
-
         stopHeartbeat();
 
     });
@@ -419,7 +452,7 @@ function setupConnection(){
         console.error(err);
 
         setStatus(
-            "🔴 Error P2P",
+            "🔴 Error conexión",
             "#EF4444"
         );
 
@@ -461,7 +494,7 @@ function stopHeartbeat(){
 }
 
 /* =========================================
-   MENSAJES
+   DATOS
 ========================================= */
 
 function handleData(data){
@@ -528,7 +561,7 @@ function handleData(data){
 
     }
 
-    /* ADIVINANZA */
+    /* ADIVINAR */
 
     if(data.type === "guess"){
 
@@ -563,7 +596,7 @@ function handleData(data){
     if(data.type === "guessFail"){
 
         answerText.innerHTML =
-            "❌ Adivinanza incorrecta";
+            "❌ Falló la adivinanza";
 
     }
 
@@ -669,31 +702,6 @@ function createBoard(){
 }
 
 /* =========================================
-   CONECTAR MANUAL
-========================================= */
-
-document
-.getElementById("connectBtn")
-.addEventListener("click",()=>{
-
-    const id =
-        document.getElementById("connectId")
-        .value
-        .trim();
-
-    if(!id) return;
-
-    conn = peer.connect(id,{
-
-        reliable:true
-
-    });
-
-    setupConnection();
-
-});
-
-/* =========================================
    PREGUNTAR
 ========================================= */
 
@@ -737,9 +745,10 @@ document
 
         question:select.value,
 
-        label:select.options[
-            select.selectedIndex
-        ].text
+        label:
+            select.options[
+                select.selectedIndex
+            ].text
 
     });
 
@@ -757,7 +766,14 @@ document
 .getElementById("guessBtn")
 .addEventListener("click",()=>{
 
-    if(!conn || !conn.open) return;
+    if(!conn || !conn.open){
+
+        answerText.innerHTML =
+            "⚠️ No conectado";
+
+        return;
+
+    }
 
     const guess =
         document
@@ -785,7 +801,14 @@ document
 .getElementById("sendChatBtn")
 .addEventListener("click",()=>{
 
-    if(!conn || !conn.open) return;
+    if(!conn || !conn.open){
+
+        answerText.innerHTML =
+            "⚠️ No conectado";
+
+        return;
+
+    }
 
     const input =
         document.getElementById("chatInput");
@@ -816,14 +839,3 @@ document
 createBoard();
 
 createPeer();
-
-/* =========================================
-   SERVICE WORKER
-========================================= */
-
-if("serviceWorker" in navigator){
-
-    navigator.serviceWorker
-    .register("sw.js");
-
-}

@@ -1,23 +1,27 @@
-const CACHE = "adivina-p2p-v2";
+const CACHE_NAME =
+    "adivina-p2p-v10";
 
-const urls = [
+const urlsToCache = [
 
-    "/",
-    "/index.html",
-    "/style.css",
-    "/app.js",
-    "/manifest.json"
+    "./",
+    "./index.html",
+    "./style.css",
+    "./app.js"
 
 ];
 
-self.addEventListener("install",(e)=>{
+self.addEventListener("install",(event)=>{
 
-    e.waitUntil(
+    self.skipWaiting();
 
-        caches.open(CACHE)
-        .then(cache=>{
+    event.waitUntil(
 
-            return cache.addAll(urls);
+        caches.open(CACHE_NAME)
+        .then((cache)=>{
+
+            return cache.addAll(
+                urlsToCache
+            );
 
         })
 
@@ -25,14 +29,44 @@ self.addEventListener("install",(e)=>{
 
 });
 
-self.addEventListener("fetch",(e)=>{
+self.addEventListener("activate",(event)=>{
 
-    e.respondWith(
+    event.waitUntil(
 
-        caches.match(e.request)
-        .then(response=>{
+        caches.keys().then((cacheNames)=>{
 
-            return response || fetch(e.request);
+            return Promise.all(
+
+                cacheNames.map((cache)=>{
+
+                    if(cache !== CACHE_NAME){
+
+                        return caches.delete(cache);
+
+                    }
+
+                })
+
+            );
+
+        })
+
+    );
+
+    self.clients.claim();
+
+});
+
+self.addEventListener("fetch",(event)=>{
+
+    event.respondWith(
+
+        fetch(event.request)
+        .catch(()=>{
+
+            return caches.match(
+                event.request
+            );
 
         })
 
