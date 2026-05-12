@@ -1,6 +1,11 @@
 /* =========================================
    🎭 ADIVINA QUIÉN P2P ULTRA ESTABLE
-   ========================================= */
+   ROOM SYSTEM + AUTO QR
+========================================= */
+
+/* =========================================
+   PERSONAJES
+========================================= */
 
 const characters = [
 
@@ -109,9 +114,18 @@ let peer = null;
 
 let conn = null;
 
-let myPeerId = "";
-
 let heartbeatInterval = null;
+
+/* =========================================
+   ROOM SYSTEM
+========================================= */
+
+const ROOM_ID =
+    new URLSearchParams(
+        window.location.search
+    ).get("room");
+
+const IS_HOST = !ROOM_ID;
 
 /* =========================================
    SONIDOS
@@ -126,6 +140,27 @@ function playSound(){
         clickSound.play();
 
     }catch(e){}
+
+}
+
+/* =========================================
+   STATUS
+========================================= */
+
+function setStatus(text,color){
+
+    connectionStatus.innerHTML = text;
+
+    connectionStatus.style.color = color;
+
+}
+
+function updateTurn(){
+
+    turnStatus.innerHTML =
+        currentTurn
+        ? "🟢 Tu turno"
+        : "⏳ Turno rival";
 
 }
 
@@ -152,33 +187,63 @@ function addMessage(text,type="remote"){
 }
 
 /* =========================================
-   STATUS
+   ROOM RANDOM
 ========================================= */
 
-function setStatus(text,color){
+function randomRoom(){
 
-    connectionStatus.innerHTML = text;
-
-    connectionStatus.style.color = color;
-
-}
-
-function updateTurn(){
-
-    turnStatus.innerHTML =
-        currentTurn
-        ? "🟢 Tu turno"
-        : "⏳ Turno rival";
+    return Math.random()
+    .toString(36)
+    .substring(2,8);
 
 }
 
 /* =========================================
-   PEERJS ULTRA ESTABLE
+   CREAR PEER
 ========================================= */
 
 function createPeer(){
 
-    peer = new Peer({
+    let peerId;
+
+    /* HOST */
+
+    if(IS_HOST){
+
+        const room =
+            randomRoom();
+
+        peerId =
+            "room-" + room + "-host";
+
+        const url =
+            window.location.origin +
+            window.location.pathname +
+            "?room=" + room;
+
+        history.replaceState(
+            {},
+            "",
+            "?room=" + room
+        );
+
+        generateQR(url);
+
+    }
+
+    /* GUEST */
+
+    else{
+
+        peerId =
+            "guest-" +
+            Math.random()
+            .toString(36)
+            .substring(2,8);
+
+    }
+
+    peer = new Peer(peerId,{
 
         debug:2,
 
@@ -206,20 +271,21 @@ function createPeer(){
 
     peer.on("open",(id)=>{
 
-        myPeerId = id;
-
         document
         .getElementById("myPeerId")
         .innerHTML = id;
-
-        generateQR(id);
 
         setStatus(
             "🟡 Esperando conexión",
             "#F59E0B"
         );
 
-        autoConnect();
+        /* SI ES GUEST */
+        if(!IS_HOST){
+
+            connectToHost();
+
+        }
 
     });
 
@@ -245,22 +311,17 @@ function createPeer(){
 }
 
 /* =========================================
-   QR AUTOMÁTICO
+   GENERAR QR
 ========================================= */
 
-function generateQR(id){
+function generateQR(url){
 
-    const qrContainer =
+    const qr =
         document.getElementById("qrcode");
 
-    qrContainer.innerHTML = "";
+    qr.innerHTML = "";
 
-    const url =
-        window.location.origin +
-        window.location.pathname +
-        "?peer=" + id;
-
-    new QRCode(qrContainer,{
+    new QRCode(qr,{
 
         text:url,
 
@@ -273,53 +334,30 @@ function generateQR(id){
 }
 
 /* =========================================
-   AUTO CONEXIÓN
+   CONECTAR A HOST
 ========================================= */
 
-function autoConnect(){
+function connectToHost(){
 
-    const params =
-        new URLSearchParams(
-            window.location.search
-        );
-
-    const peerId =
-        params.get("peer");
-
-    if(!peerId) return;
-
-    document
-    .getElementById("connectId")
-    .value = peerId;
-
-    setTimeout(()=>{
-
-        connectToPeer(peerId);
-
-    },2000);
-
-}
-
-/* =========================================
-   CONECTAR
-========================================= */
-
-function connectToPeer(id){
-
-    if(conn) return;
+    const hostId =
+        "room-" + ROOM_ID + "-host";
 
     setStatus(
         "🟡 Conectando...",
         "#F59E0B"
     );
 
-    conn = peer.connect(id,{
+    setTimeout(()=>{
 
-        reliable:true
+        conn = peer.connect(hostId,{
 
-    });
+            reliable:true
 
-    setupConnection();
+        });
+
+        setupConnection();
+
+    },2000);
 
 }
 
@@ -341,7 +379,7 @@ function setupConnection(){
         answerText.innerHTML =
             "🎮 Partida iniciada";
 
-        currentTurn = true;
+        currentTurn = IS_HOST;
 
         updateTurn();
 
@@ -423,7 +461,7 @@ function stopHeartbeat(){
 }
 
 /* =========================================
-   MANEJAR MENSAJES
+   MENSAJES
 ========================================= */
 
 function handleData(data){
@@ -435,6 +473,8 @@ function handleData(data){
         return;
 
     }
+
+    /* PREGUNTA */
 
     if(data.type === "question"){
 
@@ -467,6 +507,8 @@ function handleData(data){
 
     }
 
+    /* RESPUESTA */
+
     if(data.type === "answer"){
 
         answerText.innerHTML =
@@ -476,6 +518,8 @@ function handleData(data){
 
     }
 
+    /* CHAT */
+
     if(data.type === "chat"){
 
         addMessage(
@@ -483,6 +527,8 @@ function handleData(data){
         );
 
     }
+
+    /* ADIVINANZA */
 
     if(data.type === "guess"){
 
@@ -512,12 +558,16 @@ function handleData(data){
 
     }
 
+    /* FALLÓ */
+
     if(data.type === "guessFail"){
 
         answerText.innerHTML =
             "❌ Adivinanza incorrecta";
 
     }
+
+    /* GANÓ */
 
     if(data.type === "win"){
 
@@ -569,7 +619,7 @@ function createBoard(){
 
         `;
 
-        /* DESCARTE */
+        /* DESCARTAR */
 
         card.addEventListener("click",()=>{
 
@@ -619,7 +669,7 @@ function createBoard(){
 }
 
 /* =========================================
-   BOTÓN CONECTAR
+   CONECTAR MANUAL
 ========================================= */
 
 document
@@ -633,7 +683,13 @@ document
 
     if(!id) return;
 
-    connectToPeer(id);
+    conn = peer.connect(id,{
+
+        reliable:true
+
+    });
+
+    setupConnection();
 
 });
 
@@ -768,6 +824,6 @@ createPeer();
 if("serviceWorker" in navigator){
 
     navigator.serviceWorker
-    .register("service-worker.js");
+    .register("sw.js");
 
 }

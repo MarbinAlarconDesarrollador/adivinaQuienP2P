@@ -1,12 +1,12 @@
-const CACHE = "adivina-p2p-v1";
+const CACHE = "adivina-p2p-v2";
 
 const urls = [
 
-    "./",
-    "./index.html",
-    "./style.css",
-    "./app.js",
-    "./manifest.json"
+    "/",
+    "/index.html",
+    "/style.css",
+    "/app.js",
+    "/manifest.json"
 
 ];
 
