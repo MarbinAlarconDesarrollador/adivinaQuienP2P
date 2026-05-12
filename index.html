@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Adivina Quién P2P</title>
+
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="style.css">
+
+<meta name="theme-color" content="#5B8DEF"/>
+
+<script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+
+</head>
+
+<body>
+
+<div class="bg-bubbles"></div>
+
+<div class="app">
+
+<header>
+
+    <h1>🎭 Adivina Quién</h1>
+
+    <p>
+        Multiplayer P2P • Sin servidores • Sin base de datos
+    </p>
+
+</header>
+
+<section class="connection-panel">
+
+    <div class="my-code">
+
+        <h3>Tu código</h3>
+
+        <div id="myPeerId">
+            Generando...
+        </div>
+
+    </div>
+
+    <div id="qrcode"></div>
+
+    <div class="connect-box">
+
+        <input
+            type="text"
+            id="connectId"
+            placeholder="Código del rival"
+        >
+
+        <button id="connectBtn">
+            🔗 Conectar
+        </button>
+
+    </div>
+
+</section>
+
+<section class="status-panel">
+
+    <div id="connectionStatus">
+        🔴 Desconectado
+    </div>
+
+    <div id="turnStatus">
+        ⏳ Esperando jugador...
+    </div>
+
+</section>
+
+<section class="info-panel">
+
+    <div class="secret-card">
+
+        <h3>Tu personaje secreto</h3>
+
+        <img id="mySecretImage">
+
+        <span id="mySecretName">
+            Selecciona un personaje
+        </span>
+
+    </div>
+
+    <div class="game-panel">
+
+        <div class="question-box">
+
+            <select id="questionSelect">
+
+                <option value="gafas">
+                    ¿Usa gafas?
+                </option>
+
+                <option value="sombrero">
+                    ¿Usa sombrero?
+                </option>
+
+                <option value="barba">
+                    ¿Tiene barba?
+                </option>
+
+                <option value="mujer">
+                    ¿Es mujer?
+                </option>
+
+                <option value="cabelloNegro">
+                    ¿Tiene cabello negro?
+                </option>
+
+                <option value="ojosAzules">
+                    ¿Tiene ojos azules?
+                </option>
+
+            </select>
+
+            <button id="askBtn">
+                ❓ Preguntar
+            </button>
+
+        </div>
+
+        <div class="guess-box">
+
+            <input
+                type="text"
+                id="guessInput"
+                placeholder="¿Cuál es el personaje?"
+            >
+
+            <button id="guessBtn">
+                🎯 Adivinar
+            </button>
+
+        </div>
+
+        <div class="answer-box">
+
+            <h2 id="answerText">
+                Esperando partida...
+            </h2>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section class="board" id="board"></section>
+
+<section class="chat-panel">
+
+    <div class="chat-messages" id="chatMessages"></div>
+
+    <div class="chat-input">
+
+        <input
+            type="text"
+            id="chatInput"
+            placeholder="Escribe un mensaje..."
+        >
+
+        <button id="sendChatBtn">
+            ➤
+        </button>
+
+    </div>
+
+</section>
+
+</div>
+
+<div class="winner-modal hidden" id="winnerModal">
+
+    <div class="winner-content">
+
+        <h1 id="winnerTitle">
+            🎉 Ganaste
+        </h1>
+
+        <button onclick="location.reload()">
+            Nueva partida
+        </button>
+
+    </div>
+
+</div>
+
+<audio id="clickSound">
+    <source src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3">
+</audio>
+
+<script src="app.js"></script>
+
+</body>
+</html>
