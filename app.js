@@ -248,7 +248,7 @@ const characters = [
 
 {
     name:"Lucas",
-    image:"/assets/lucas.png",
+    image:"./assets/lucas.png",
     mujer:false,
     gafas:true,
     sombrero:true,
@@ -259,7 +259,7 @@ const characters = [
 
 {
     name:"Karina",
-    image:"/assets/karina.png",
+    image:"assets/karina.png",
     mujer:true,
     gafas:false,
     sombrero:false,
