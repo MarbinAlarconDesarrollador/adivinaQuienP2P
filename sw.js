@@ -1,13 +1,34 @@
 const CACHE_NAME =
-    "adivina-p2p-v10";
+    "adivina-p2p-v11";
 
 const urlsToCache = [
 
     "./",
     "./index.html",
     "./style.css",
-    "./app.js"
-
+    "./app.js",
+    "./assets/anderson.png",
+    "./assets/camilo.png",
+    "./assets/carla.png",
+    "./assets/carlos.png",
+    "./assets/francy.png",
+    "./assets/freddy.png",
+    "./assets/jaider.png",
+    "./assets/jesus.png",
+    "./assets/jhoan.png",
+    "./assets/jorge.png",
+    "./assets/karina.png",
+    "./assets/laura.png",
+    "./assets/lorena.png",
+    "./assets/lucas.png",
+    "./assets/lucia.png",
+    "./assets/luis.png",
+    "./assets/marbin.png",
+    "./assets/nuvia.png",
+    "./assets/pedro.png",
+    "./assets/rafael.png",
+    "./assets/valentina.png",
+    "./assets/withman.png"
 ];
 
 self.addEventListener("install",(event)=>{

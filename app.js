@@ -10,9 +10,9 @@
 const characters = [
 
 {
-    name:"Ana",
-    image:"https://i.pravatar.cc/300?img=1",
-    mujer:true,
+    name:"Carlos",
+    image:"/assets/carlos.png",
+    mujer:false,
     gafas:false,
     sombrero:false,
     barba:false,
@@ -22,20 +22,20 @@ const characters = [
 
 {
     name:"Luis",
-    image:"https://i.pravatar.cc/300?img=2",
+    image:"/assets/luis.png",
     mujer:false,
     gafas:true,
     sombrero:false,
-    barba:true,
-    cabelloNegro:false,
-    ojosAzules:true
+    barba:false,
+    cabelloNegro:true,
+    ojosAzules:false
 },
 
 {
-    name:"Sara",
-    image:"https://i.pravatar.cc/300?img=3",
-    mujer:true,
-    gafas:true,
+    name:"Rafael",
+    image:"/assets/rafael.png",
+    mujer:false,
+    gafas:false,
     sombrero:false,
     barba:false,
     cabelloNegro:true,
@@ -43,16 +43,230 @@ const characters = [
 },
 
 {
-    name:"Carlos",
-    image:"https://i.pravatar.cc/300?img=4",
+    name:"Withman",
+    image:"/assets/withman.png",
+    mujer:false,
+    gafas:true,
+    sombrero:false,
+    barba:true,
+    cabelloNegro:true,
+    ojosAzules:false
+},
+{
+    name:"Marbin",
+    image:"/assets/marbin.png",
     mujer:false,
     gafas:false,
+    sombrero:false,
+    barba:false,
+    cabelloNegro:true,
+    ojosAzules:true
+},
+
+{
+    name:"Freddy",
+    image:"/assets/freddy.png",
+    mujer:false,
+    gafas:true,
+    sombrero:false,
+    barba:true,
+    cabelloNegro:false,
+    ojosAzules:false
+},
+
+{
+    name:"Camilo",
+    image:"/assets/camilo.png",
+    mujer:false,
+    gafas:true,
+    sombrero:false,
+    barba:true,
+    cabelloNegro:true,
+    ojosAzules:false
+},
+
+{
+    name:"Jaider",
+    image:"/assets/jaider.png",
+    mujer:false,
+    gafas:false,
+    sombrero:false,
+    barba:false,
+    cabelloNegro:true,
+    ojosAzules:false
+},
+{
+    name:"Nuvia",
+    image:"/assets/nuvia.png",
+    mujer:true,
+    gafas:false,
+    sombrero:false,
+    barba:false,
+    cabelloNegro:true,
+    ojosAzules:false
+},
+
+{
+    name:"Carla",
+    image:"/assets/carla.png",
+    mujer:true,
+    gafas:false,
+    sombrero:false,
+    barba:false,
+    cabelloNegro:true,
+    ojosAzules:false
+},
+
+{
+    name:"Jesus",
+    image:"/assets/jesus.png",
+    mujer:false,
+    gafas:false,
+    sombrero:false,
+    barba:false,
+    cabelloNegro:true,
+    ojosAzules:false
+},
+
+{
+    name:"Laura",
+    image:"/assets/laura.png",
+    mujer:true,
+    gafas:false,
+    sombrero:false,
+    barba:false,
+    cabelloNegro:true,
+    ojosAzules:false
+},
+{
+    name:"Francy",
+    image:"/assets/francy.png",
+    mujer:true,
+    gafas:false,
+    sombrero:false,
+    barba:false,
+    cabelloNegro:true,
+    ojosAzules:false
+},
+
+{
+    name:"Pedro",
+    image:"/assets/pedro.png",
+    mujer:false,
+    gafas:false,
+    sombrero:true,
+    barba:false,
+    cabelloNegro:true,
+    ojosAzules:false
+},
+
+{
+    name:"Jhoan",
+    image:"/assets/jhoan.png",
+    mujer:false,
+    gafas:false,
+    sombrero:true,
+    barba:false,
+    cabelloNegro:true,
+    ojosAzules:false
+},
+
+{
+    name:"Valentina",
+    image:"/assets/valentina.png",
+    mujer:true,
+    gafas:true,
+    sombrero:false,
+    barba:false,
+    cabelloNegro:false,
+    ojosAzules:false
+},
+{
+    name:"Lorena",
+    image:"/assets/lorena.png",
+    mujer:true,
+    gafas:false,
+    sombrero:false,
+    barba:false,
+    cabelloNegro:false,
+    ojosAzules:true
+},
+
+{
+    name:"Miguel",
+    image:"/assets/miguel.png",
+    mujer:false,
+    gafas:false,
+    sombrero:false,
+    barba:true,
+    cabelloNegro:false,
+    ojosAzules:false
+},
+
+{
+    name:"Jorge",
+    image:"/assets/jorge.png",
+    mujer:false,
+    gafas:false,
+    sombrero:false,
+    barba:false,
+    cabelloNegro:true,
+    ojosAzules:false
+},
+
+{
+    name:"Lucia",
+    image:"/assets/lucia.png",
+    mujer:true,
+    gafas:false,
+    sombrero:false,
+    barba:false,
+    cabelloNegro:true,
+    ojosAzules:false
+},
+{
+    name:"Anderson",
+    image:"/assets/anderson.png",
+    mujer:false,
+    gafas:false,
+    sombrero:false,
+    barba:true,
+    cabelloNegro:true,
+    ojosAzules:false
+},
+
+{
+    name:"Luigi",
+    image:"/assets/luigi.png",
+    mujer:false,
+    gafas:false,
+    sombrero:false,
+    barba:false,
+    cabelloNegro:true,
+    ojosAzules:false
+},
+
+{
+    name:"Lucas",
+    image:"/assets/lucas.png",
+    mujer:false,
+    gafas:true,
     sombrero:true,
     barba:true,
     cabelloNegro:true,
     ojosAzules:false
-}
+},
 
+{
+    name:"Karina",
+    image:"/assets/karina.png",
+    mujer:true,
+    gafas:false,
+    sombrero:false,
+    barba:false,
+    cabelloNegro:true,
+    ojosAzules:false
+}
 ];
 
 /* GENERAR 24 */
