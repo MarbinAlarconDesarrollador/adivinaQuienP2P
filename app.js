@@ -11,7 +11,7 @@ const characters = [
 
 {
     name:"Carlos",
-    image:"/assets/carlos.png",
+    image:"./assets/carlos.png",
     mujer:false,
     gafas:false,
     sombrero:false,
@@ -22,7 +22,7 @@ const characters = [
 
 {
     name:"Luis",
-    image:"/assets/luis.png",
+    image:"./assets/luis.png",
     mujer:false,
     gafas:true,
     sombrero:false,
@@ -33,7 +33,7 @@ const characters = [
 
 {
     name:"Rafael",
-    image:"/assets/rafael.png",
+    image:"./assets/rafael.png",
     mujer:false,
     gafas:false,
     sombrero:false,
@@ -44,7 +44,7 @@ const characters = [
 
 {
     name:"Withman",
-    image:"/assets/withman.png",
+    image:"./assets/withman.png",
     mujer:false,
     gafas:true,
     sombrero:false,
@@ -54,7 +54,7 @@ const characters = [
 },
 {
     name:"Marbin",
-    image:"/assets/marbin.png",
+    image:"./assets/marbin.png",
     mujer:false,
     gafas:false,
     sombrero:false,
@@ -65,7 +65,7 @@ const characters = [
 
 {
     name:"Freddy",
-    image:"/assets/freddy.png",
+    image:"./assets/freddy.png",
     mujer:false,
     gafas:true,
     sombrero:false,
@@ -76,7 +76,7 @@ const characters = [
 
 {
     name:"Camilo",
-    image:"/assets/camilo.png",
+    image:"./assets/camilo.png",
     mujer:false,
     gafas:true,
     sombrero:false,
@@ -87,7 +87,7 @@ const characters = [
 
 {
     name:"Jaider",
-    image:"/assets/jaider.png",
+    image:"./assets/jaider.png",
     mujer:false,
     gafas:false,
     sombrero:false,
@@ -97,7 +97,7 @@ const characters = [
 },
 {
     name:"Nuvia",
-    image:"/assets/nuvia.png",
+    image:"./assets/nuvia.png",
     mujer:true,
     gafas:false,
     sombrero:false,
@@ -108,7 +108,7 @@ const characters = [
 
 {
     name:"Carla",
-    image:"/assets/carla.png",
+    image:"./assets/carla.png",
     mujer:true,
     gafas:false,
     sombrero:false,
@@ -119,7 +119,7 @@ const characters = [
 
 {
     name:"Jesus",
-    image:"/assets/jesus.png",
+    image:"./assets/jesus.png",
     mujer:false,
     gafas:false,
     sombrero:false,
@@ -130,7 +130,7 @@ const characters = [
 
 {
     name:"Laura",
-    image:"/assets/laura.png",
+    image:"./assets/laura.png",
     mujer:true,
     gafas:false,
     sombrero:false,
@@ -140,7 +140,7 @@ const characters = [
 },
 {
     name:"Francy",
-    image:"/assets/francy.png",
+    image:"./assets/francy.png",
     mujer:true,
     gafas:false,
     sombrero:false,
@@ -151,7 +151,7 @@ const characters = [
 
 {
     name:"Pedro",
-    image:"/assets/pedro.png",
+    image:"./assets/pedro.png",
     mujer:false,
     gafas:false,
     sombrero:true,
@@ -162,7 +162,7 @@ const characters = [
 
 {
     name:"Jhoan",
-    image:"/assets/jhoan.png",
+    image:"./assets/jhoan.png",
     mujer:false,
     gafas:false,
     sombrero:true,
@@ -173,7 +173,7 @@ const characters = [
 
 {
     name:"Valentina",
-    image:"/assets/valentina.png",
+    image:"./assets/valentina.png",
     mujer:true,
     gafas:true,
     sombrero:false,
@@ -183,7 +183,7 @@ const characters = [
 },
 {
     name:"Lorena",
-    image:"/assets/lorena.png",
+    image:"./assets/lorena.png",
     mujer:true,
     gafas:false,
     sombrero:false,
@@ -194,7 +194,7 @@ const characters = [
 
 {
     name:"Miguel",
-    image:"/assets/miguel.png",
+    image:"./assets/miguel.png",
     mujer:false,
     gafas:false,
     sombrero:false,
@@ -205,7 +205,7 @@ const characters = [
 
 {
     name:"Jorge",
-    image:"/assets/jorge.png",
+    image:"./assets/jorge.png",
     mujer:false,
     gafas:false,
     sombrero:false,
@@ -216,7 +216,7 @@ const characters = [
 
 {
     name:"Lucia",
-    image:"/assets/lucia.png",
+    image:"./assets/lucia.png",
     mujer:true,
     gafas:false,
     sombrero:false,
@@ -226,7 +226,7 @@ const characters = [
 },
 {
     name:"Anderson",
-    image:"/assets/anderson.png",
+    image:"./assets/anderson.png",
     mujer:false,
     gafas:false,
     sombrero:false,
@@ -237,7 +237,7 @@ const characters = [
 
 {
     name:"Luigi",
-    image:"/assets/luigi.png",
+    image:"./assets/luigi.png",
     mujer:false,
     gafas:false,
     sombrero:false,
@@ -259,7 +259,7 @@ const characters = [
 
 {
     name:"Karina",
-    image:"assets/karina.png",
+    image:"./assets/karina.png",
     mujer:true,
     gafas:false,
     sombrero:false,
