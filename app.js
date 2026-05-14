@@ -52,6 +52,7 @@ const characters = [
     cabelloNegro:true,
     ojosAzules:false
 },
+
 {
     name:"Marbin",
     image:"./assets/marbin.png",
@@ -95,6 +96,7 @@ const characters = [
     cabelloNegro:true,
     ojosAzules:false
 },
+
 {
     name:"Nuvia",
     image:"./assets/nuvia.png",
@@ -138,6 +140,7 @@ const characters = [
     cabelloNegro:true,
     ojosAzules:false
 },
+
 {
     name:"Francy",
     image:"./assets/francy.png",
@@ -181,6 +184,7 @@ const characters = [
     cabelloNegro:false,
     ojosAzules:false
 },
+
 {
     name:"Lorena",
     image:"./assets/lorena.png",
@@ -224,6 +228,7 @@ const characters = [
     cabelloNegro:true,
     ojosAzules:false
 },
+
 {
     name:"Anderson",
     image:"./assets/anderson.png",
@@ -267,31 +272,8 @@ const characters = [
     cabelloNegro:true,
     ojosAzules:false
 }
+
 ];
-
-/* GENERAR 24 */
-
-while(characters.length < 24){
-
-    const base =
-        characters[
-            Math.floor(Math.random()*4)
-        ];
-
-    characters.push({
-
-        ...base,
-
-        name:
-            base.name +
-            characters.length,
-
-        image:
-            `https://i.pravatar.cc/300?img=${characters.length+5}`
-
-    });
-
-}
 
 /* =========================================
    ELEMENTOS
@@ -329,6 +311,8 @@ let mySecret = null;
 
 let currentTurn = false;
 
+let turnActionUsed = false;
+
 let peer = null;
 
 let conn = null;
@@ -354,9 +338,14 @@ function playSound(){
 
     try{
 
-        clickSound.currentTime = 0;
+        if(document.hasFocus()){
 
-        clickSound.play();
+            clickSound.currentTime = 0;
+
+            clickSound.play()
+            .catch(()=>{});
+
+        }
 
     }catch(e){}
 
@@ -380,6 +369,44 @@ function updateTurn(){
         currentTurn
         ? "🟢 Tu turno"
         : "⏳ Turno rival";
+
+    const askBtn =
+        document.getElementById("askBtn");
+
+    const guessBtn =
+        document.getElementById("guessBtn");
+
+    if(!currentTurn || turnActionUsed){
+
+        askBtn.disabled = true;
+
+        guessBtn.disabled = true;
+
+        askBtn.style.opacity = ".5";
+
+        guessBtn.style.opacity = ".5";
+
+        askBtn.style.cursor = "not-allowed";
+
+        guessBtn.style.cursor = "not-allowed";
+
+    }
+
+    else{
+
+        askBtn.disabled = false;
+
+        guessBtn.disabled = false;
+
+        askBtn.style.opacity = "1";
+
+        guessBtn.style.opacity = "1";
+
+        askBtn.style.cursor = "pointer";
+
+        guessBtn.style.cursor = "pointer";
+
+    }
 
 }
 
@@ -450,8 +477,6 @@ function createPeer(){
 
     let peerId;
 
-    /* HOST */
-
     if(IS_HOST){
 
         roomCode =
@@ -480,8 +505,6 @@ function createPeer(){
 
     }
 
-    /* GUEST */
-
     else{
 
         peerId =
@@ -499,6 +522,16 @@ function createPeer(){
 
     peer = new Peer(peerId,{
 
+        host:"0.peerjs.com",
+
+        port:443,
+
+        secure:true,
+
+        path:"/",
+
+        pingInterval:3000,
+
         debug:2,
 
         config:{
@@ -507,14 +540,6 @@ function createPeer(){
 
                 {
                     urls:"stun:stun.l.google.com:19302"
-                },
-
-                {
-                    urls:"stun:global.stun.twilio.com:3478"
-                },
-
-                {
-                    urls:"stun:stun1.l.google.com:19302"
                 }
 
             ]
@@ -539,8 +564,6 @@ function createPeer(){
             "#F59E0B"
         );
 
-        /* AUTO CONNECT */
-
         if(!IS_HOST){
 
             connectToHost();
@@ -558,6 +581,29 @@ function createPeer(){
         conn = connection;
 
         setupConnection();
+
+    });
+
+    peer.on("disconnected",()=>{
+
+        console.log(
+            "Reconectando Peer..."
+        );
+
+        setStatus(
+            "🟡 Reconectando...",
+            "#F59E0B"
+        );
+
+        peer.reconnect();
+
+    });
+
+    peer.on("close",()=>{
+
+        console.log(
+            "Peer cerrado"
+        );
 
     });
 
@@ -617,8 +663,6 @@ function setupConnection(){
 
     conn.on("open",()=>{
 
-        playSound();
-
         console.log(
             "CONEXIÓN ABIERTA"
         );
@@ -632,6 +676,8 @@ function setupConnection(){
             "🎮 Partida iniciada";
 
         currentTurn = IS_HOST;
+
+        turnActionUsed = false;
 
         updateTurn();
 
@@ -750,6 +796,8 @@ function handleData(data){
 
         currentTurn = true;
 
+        turnActionUsed = false;
+
         updateTurn();
 
     }
@@ -779,6 +827,12 @@ function handleData(data){
 
     if(data.type === "guess"){
 
+        currentTurn = true;
+
+        turnActionUsed = false;
+
+        updateTurn();
+
         if(!mySecret) return;
 
         if(data.guess === mySecret.name){
@@ -793,7 +847,9 @@ function handleData(data){
                 "😢 PERDISTE"
             );
 
-        }else{
+        }
+
+        else{
 
             conn.send({
 
@@ -950,6 +1006,15 @@ document
 
     }
 
+    if(turnActionUsed){
+
+        answerText.innerHTML =
+            "⚠️ Ya usaste tu turno";
+
+        return;
+
+    }
+
     const select =
         document.getElementById("questionSelect");
 
@@ -965,6 +1030,8 @@ document
             ].text
 
     });
+
+    turnActionUsed = true;
 
     currentTurn = false;
 
@@ -989,13 +1056,47 @@ document
 
     }
 
+    if(!mySecret){
+
+        answerText.innerHTML =
+            "⚠️ Selecciona personaje";
+
+        return;
+
+    }
+
+    if(!currentTurn){
+
+        answerText.innerHTML =
+            "⏳ Espera tu turno";
+
+        return;
+
+    }
+
+    if(turnActionUsed){
+
+        answerText.innerHTML =
+            "⚠️ Ya usaste tu turno";
+
+        return;
+
+    }
+
     const guess =
         document
         .getElementById("guessInput")
         .value
         .trim();
 
-    if(!guess) return;
+    if(!guess){
+
+        answerText.innerHTML =
+            "⚠️ Escribe un personaje";
+
+        return;
+
+    }
 
     conn.send({
 
@@ -1004,6 +1105,12 @@ document
         guess:guess
 
     });
+
+    turnActionUsed = true;
+
+    currentTurn = false;
+
+    updateTurn();
 
 });
 
@@ -1053,3 +1160,14 @@ document
 createBoard();
 
 createPeer();
+
+/* =========================================
+   SERVICE WORKER
+========================================= */
+
+if("serviceWorker" in navigator){
+
+    navigator.serviceWorker
+    .register("./sw.js");
+
+}
